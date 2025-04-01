@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    container_name: ${CONTAINER_NAME:-projeto_datascience_container}
+    volumes:
+      - .:/app
+    ports:
+      - "${JUPYTER_PORT:-8888}:8888"
+    environment:
+      - PYTHONPATH=/app
+      - PYTHONUNBUFFERED=1
+    tty: true
+    stdin_open: true
+    # Se você precisar de um banco de dados:
+    # depends_on:
+    #   - db
+    command: bash
+
+  # Exemplo de serviço de banco de dados (descomente se necessário)
+  # db:
+  #   image: postgres:14
+  #   container_name: ${DB_CONTAINER_NAME:-projeto_datascience_db}
+  #   environment:
+  #     - POSTGRES_USER=postgres
+  #     - POSTGRES_PASSWORD=postgres
+  #     - POSTGRES_DB=projetodata
+  #   volumes:
+  #     - postgres_data:/var/lib/postgresql/data
+  #   ports:
+  #     - "5432:5432"
+
+# Volumes para persistência de dados (descomente se necessário)
+# volumes:
+#   postgres_data:
